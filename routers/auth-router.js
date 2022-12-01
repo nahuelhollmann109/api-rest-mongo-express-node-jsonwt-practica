@@ -1,8 +1,8 @@
-import  express  from "express";
+import  {Router}  from "express";
 import { register,login } from "../controllers/auth-controlers.js";
 import {body} from "express-validator";
 import {validation} from '../middlewares/resultValidation.js'
-const router = express.Router('/');
+const router = Router('/');
 
 router.post('/register',[
     body('email','Formato Email incorrecto')

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcryptjs from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
  email:{
@@ -16,17 +16,20 @@ const userSchema = new mongoose.Schema({
  }
 });
 userSchema.pre("save", async function(next){
-  const user =this
+  const user = this;
 
-  if(!user.isModified('password')) return next();
+  if(!user.isModified('password')){return next();}
 
   try{
-   const salt = await bcryptjs.genSalt(10);
-    user.password = await bcryptjs.hash(user.password, salt);
+   const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
    next();
   }catch(error){
    throw new Error('Fallo el hash de contrasseña '+error);
   }
 });
 
+userSchema.methods.comparePassword = async function(candidatePassword){
+  return await bcrypt.compare(candidatePassword, this.password);
+};
 export const User = mongoose.model('User',userSchema);

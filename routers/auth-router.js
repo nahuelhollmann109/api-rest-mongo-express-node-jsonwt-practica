@@ -10,9 +10,9 @@ router.post('/register',[
     .isEmail()
     .normalizeEmail(),
 
-    body('password','Minimo 8 caracteres')
+    body('password','Minimo 6 caracteres')
     .trim()
-    .isLength({min: 7}),
+    .isLength({min: 6}),
 
     body('password','Formato de password incorrecto')
     .custom((value,{req})=>{
